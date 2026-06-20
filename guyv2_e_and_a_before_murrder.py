@@ -12,13 +12,22 @@ recepit_number = []
 #Constants
 MIN_HIRED = 1
 MAX_HIRED = 500
-
+    
 def vaild_amount(amount):
     #checks if its vaild or not.
     
     try:
         can_amount = int(amount)
-        
+    except ValueError:
+        messagebox.showerror("Error", "Please enter an integer (Can't inculde a decimal point).")
+        return -1
+    if can_amount < MIN_HIRED:
+        messagebox.showerror("Error", "You can't hire less then one item")
+        return -1
+    elif can_amount > MAX_HIRED:
+        messagebox.showerror("Error", "You can't hire more then 500 items")
+        return -1
+
 
 
 
@@ -32,6 +41,12 @@ def log_data():
     amount = amount_hired_entry.get().strip()
     returns = returns_box.get()
     
+    #Stops the amount from being -1
+    vaild = vaild_amount((amount))
+    if vaild == -1:
+        return
+                        
+
     #stops all Errors
     if name == "" or hired == "" or amount == "":
          messagebox.showerror("Error", "Please fill in all fields.")
@@ -51,6 +66,8 @@ def log_data():
 
 
 
+
+                                                                                                              
 
 #GUI
 root = tk.Tk()
