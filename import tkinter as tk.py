@@ -71,6 +71,8 @@ def submit_ticket():
     #stops the final price from being $-1
     if price == -1:
         return
+     
+     
      #final payment if credit is picked.   
     elif payment_method == "Credit":
         surcharge = price * CREDIT_SURCHARGE
