@@ -5,9 +5,11 @@ from tkinter import ttk, messagebox
 
 #data list
 full_name = []
-hired = []
+hired_yes = []
 amount_hired = []
 recepit_number = []
+returns_list = []
+
 
 #Constants
 MIN_HIRED = 1
@@ -67,17 +69,43 @@ def log_data():
         messagebox.showerror("Error", "Please select Yes or No.")
         return
 
-    else:
-        print(f"Name: {name}, Hired: {hired}, Amount: {amount},recpit: {(recepit):.2f} ")
-        messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nrecepit: {(recepit):.2f}")
+    elif returns == "Yes":
+        print(f"Name: {name}, Hired: {hired}, Amount: {amount}, recpit: {recepit}, Return: {returns} ")
+        messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nrecepit: {recepit}\nReturn: {returns}")
         full_name.append(name)
-        hired.append(hired)
+        hired_yes.append(hired)
         amount_hired.append(amount)
-        recepit_number.append(recepit_number)
-
+        recepit_number.append(recepit)
+        returns_list.append(returns)
+        return
+    
+    else:
+        print(f"Name: {name}, Hired: {hired}, Amount: {amount},recpit: {recepit} ")
+        messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nrecepit: {recepit}")
+        full_name.append(name)
+        hired_yes.append(hired)
+        amount_hired.append(amount)
+        recepit_number.append(recepit)
+        returns_list.append(returns)
         return
        
+def save_data():
+    
 
+    with open("attendee_details.txt", "w") as file:
+
+        file.write("Attendee Details\n")
+        file.write("====================\n\n")
+         #writes the nesscary data in the text file
+        for i in range(len(full_name)):
+            file.write(f"Name: {full_name[i]}\n")
+            file.write(f"Age: {hired_yes[i]}\n")
+            file.write(f"Cost: ${amount_hired[i]}\n")
+            file.write(f"Surcharge: ${recepit_number[i]}\n")
+            file.write(f"Cost: ${returns_list[i]}\n")
+            
+    return
+          
 
                                                                                                               
 
@@ -109,7 +137,7 @@ returns_box.current(0)
 submit_btn = ttk.Button(root, text= "Log data", command= log_data) 
 submit_btn.grid(row=5, column=0, pady=10)
 
-finish_btn = ttk.Button(root, text="Finish ",)
+finish_btn = ttk.Button(root, text="Finish ", command= save_data)
 finish_btn.grid(row=5, column=1, pady=10)
 
 
