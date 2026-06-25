@@ -7,7 +7,7 @@ from tkinter import ttk, messagebox
 full_name = []
 hired_yes = []
 amount_hired = []
-recepit_number = []
+receipt_number = []
 
 
 
@@ -15,8 +15,8 @@ recepit_number = []
 MIN_HIRED = 1
 MAX_HIRED = 500
     
-def vaild_amount(amount):
-    #checks if its vaild or not.
+def valid_amount(amount):
+    #checks if amount valid or not.
     
     try:
         can_amount = int(amount)
@@ -36,22 +36,22 @@ def vaild_amount(amount):
 
 
 
-
+#saves data to a list so that in can be saved to a text file
 def log_data():
-    #allows the GUI to allow inputs 
+    
     name = name_entry.get().strip()
     hired = hired_entry.get().strip()
     amount = amount_hired_entry.get().strip()
     
     
-    #genrates a recepit and stops it from being the same
-    recepit = random.randint(1000000000, 99999999999999999999)
-    while recepit in recepit_number:
-        recepit = random.randint(1000000000, 99999999999999999999)
+    #genrates a receipt and stops it from being the same
+    receipt = random.randint(1000000000, 99999999999999999999)
+    while receipt in receipt_number:
+        receipt = random.randint(1000000000, 99999999999999999999)
     
             
 
-    #stops all Errors
+    #stops the program from stopping to errors
     if name == "" or hired == "":
          messagebox.showerror("Error", "Please fill in all fields.")
          return
@@ -62,18 +62,18 @@ def log_data():
         messagebox.showerror("Error", "hired can't be a number.")
         return
     
-    vaild = vaild_amount((amount))
+    valid = valid_amount((amount))
     #Stops the amount from being -1
-    if vaild == -1:
+    if valid == -1:
         return
     else:
-        print(f"Name: {name}, Hired: {hired}, Amount: {amount}, recepit: {recepit} ")
-        messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nrecepit: {recepit}")
+        print(f"Name: {name}, Hired: {hired}, Amount: {amount}, receipt: {receipt} ")
+        messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nReceipt: {receipt}")
         full_name.append(name)
         hired_yes.append(hired)
         amount_hired.append(amount)
-        recepit_number.append(recepit)
-        returns_box["values"] = recepit_number
+        receipt_number.append(receipt)
+        returns_box["values"] = receipt_number
         return
 
  #saves the data to a text file     
@@ -90,33 +90,33 @@ def save_data():
             file.write(f"Name: {full_name[i]}\n")
             file.write(f"Hired: {hired_yes[i]}\n")
             file.write(f"Amount Hired: {amount_hired[i]}\n")
-            file.write(f"Recepit: {recepit_number[i]}\n\n")
+            file.write(f"receipt: {receipt_number[i]}\n\n")
             
             
     return
-#allows the user to remove returns       
+#allows the user to remove returns from the text file and list       
 def returns():
     remove = returns_box.get()
     
     if remove == "":
-        messagebox.showerror("Error", "select a recepit.")
+        messagebox.showerror("Error", "select a receipt.")
         return
     
-    recepit = int(remove)
+    receipt = int(remove)
 
     #uses the recpeits index to delete the index form the file
-    if recepit in recepit_number:
-        index = recepit_number.index(recepit)
+    if receipt in receipt_number:
+        index = receipt_number.index(receipt)
         del full_name[index]
         del hired_yes[index]
         del amount_hired[index]
-        del recepit_number[index]
+        del receipt_number[index]
         
         save_data()
-        returns_box["values"] = recepit_number
+        returns_box["values"] = receipt_number
         
         
-        messagebox.showinfo("it worky")
+        messagebox.showinfo("Saved","Return done")
         returns_box.set('')
         return
     
@@ -124,7 +124,7 @@ def returns():
        
                                                                                                               
 
-#GUI
+#GUI so that the user can easily save the data to a document 
 root = tk.Tk()
 root.title("Mini-Movie Fundrasier")
 root.geometry ("350x350")
@@ -150,7 +150,7 @@ submit_btn.grid(row=5, column=1, pady=10)
 title_label = ttk.Label(root, text="Returns", font=("Verdana", 18, "bold"))
 title_label.grid(row=6, column=0, columnspan=2, pady=10)
 
-ttk.Label(root, text= "Put in the recepit number: "). grid(row=7, column=0, sticky="e")
+ttk.Label(root, text= "Put in the receipt number: "). grid(row=7, column=0, sticky="e")
 returns_box = ttk.Combobox(root, values = [], state = "readonly")
 returns_box.grid(row=7, column=1)
 
