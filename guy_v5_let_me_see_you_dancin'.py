@@ -9,6 +9,8 @@ hired_yes = []
 amount_hired = []
 recepit_number = []
 
+
+
 #Constants
 MIN_HIRED = 1
 MAX_HIRED = 500
