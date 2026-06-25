@@ -21,7 +21,7 @@ def vaild_amount(amount):
     try:
         can_amount = int(amount)
     except ValueError:
-        messagebox.showerror("Error", "Please enter an integer (Can't inculde a decimal point).")
+        messagebox.showerror("Error", "amount can only be a number (Can't inculde a decimal point).")
         return -1
     if can_amount < MIN_HIRED:
         messagebox.showerror("Error", "You can't hire less then one item")
@@ -29,7 +29,8 @@ def vaild_amount(amount):
     elif can_amount > MAX_HIRED:
         messagebox.showerror("Error", "You can't hire more then 500 items")
         return -1
-
+   
+        
     return can_amount
 
 
@@ -43,17 +44,15 @@ def log_data():
     amount = amount_hired_entry.get().strip()
     
     
-    #genrates a recepit
+    #genrates a recepit and stops it from being the same
     recepit = random.randint(1000000000, 99999999999999999999)
-
-    #Stops the amount from being -1
-    vaild = vaild_amount((amount))
-    if vaild == -1:
-        return
-                        
+    while recepit in recepit_number:
+        recepit = random.randint(1000000000, 99999999999999999999)
+    
+            
 
     #stops all Errors
-    if name == "" or hired == "" or amount == "":
+    if name == "" or hired == "":
          messagebox.showerror("Error", "Please fill in all fields.")
          return
     elif name.isdigit():
@@ -62,10 +61,11 @@ def log_data():
     elif hired.isdigit():
         messagebox.showerror("Error", "hired can't be a number.")
         return
-    elif not amount.isdigit():
-        messagebox.showerror("Error", "amount can only be a number.")
+    
+    vaild = vaild_amount((amount))
+    #Stops the amount from being -1
+    if vaild == -1:
         return
-   
     else:
         print(f"Name: {name}, Hired: {hired}, Amount: {amount}, recepit: {recepit} ")
         messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nrecepit: {recepit}")
@@ -80,7 +80,7 @@ def log_data():
 def save_data():
     
 
-    with open("attendee_details.txt", "w") as file:
+    with open("Party_hire.txt", "w") as file:
         
         file.write("====================\n")
         file.write("Party hire\n")
@@ -94,17 +94,17 @@ def save_data():
             
             
     return
-#allows the user to do returns       
+#allows the user to remove returns       
 def returns():
-    taco = returns_box.get()
+    remove = returns_box.get()
     
-    if taco == "":
-        messagebox.showerror("Error", "Please fill in all fields.")
+    if remove == "":
+        messagebox.showerror("Error", "select a recepit.")
         return
     
-    recepit = int(taco)
+    recepit = int(remove)
 
-
+    #uses the recpeits index to delete the index form the file
     if recepit in recepit_number:
         index = recepit_number.index(recepit)
         del full_name[index]
@@ -112,8 +112,9 @@ def returns():
         del amount_hired[index]
         del recepit_number[index]
         
-        
+        save_data()
         returns_box["values"] = recepit_number
+        
         
         messagebox.showinfo("it worky")
         returns_box.set('')
