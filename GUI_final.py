@@ -74,6 +74,8 @@ def log_data():
         amount_hired.append(amount)
         receipt_number.append(receipt)
         returns_box["values"] = receipt_number
+        hired_entry.delete(0, tk.END)
+        amount_hired_entry.delete(0, tk.END)
         return
 
  #saves the data to a text file     
@@ -90,7 +92,7 @@ def save_data():
             file.write(f"Name: {full_name[i]}\n")
             file.write(f"Hired: {hired_yes[i]}\n")
             file.write(f"Amount Hired: {amount_hired[i]}\n")
-            file.write(f"receipt: {receipt_number[i]}\n\n")
+            file.write(f"Receipt: {receipt_number[i]}\n\n")
             
             
     return
