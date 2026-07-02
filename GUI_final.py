@@ -6,7 +6,7 @@ from tkinter import ttk, messagebox
 #data list
 #curret hires
 full_name = []
-hired_yes = []
+hired_items = []
 amount_hired = []
 receipt_number = []
 
@@ -28,35 +28,33 @@ def valid_amount(amount):
     except ValueError:
         messagebox.showerror("Error", "amount can only be a number (Can't inculde a decimal point).")
         return -1
+    
     if can_amount < MIN_HIRED:
         messagebox.showerror("Error", "You can't hire less then one item")
         return -1
     elif can_amount > MAX_HIRED:
         messagebox.showerror("Error", "You can't hire more then 500 items")
         return -1
-   
-        
+    
     return can_amount
-
-
 
 
 #saves data to a list so that in can be saved to a text file
 def log_data():
-    
     name = name_entry.get().strip()
     hired = hired_entry.get().strip()
     amount = amount_hired_entry.get().strip()
     receipt = receipt_number_entry.get().strip()
     
-    
+    #if the user puts in a blank a random receipt is made.
     if receipt == "":
         while True:
             receipt = str(random.randint(1000000000, 99999999999999999999))
+            
             if receipt not in receipt_number:
                 break
 
-    # ensure receipt is string (safety step)
+    #makes it so the random number and manual input are both str
     receipt = str(receipt)
 
 #checks if the the receipt is a number 
@@ -81,17 +79,16 @@ def log_data():
         return
     
     valid = valid_amount((amount))
+    
     #Stops the amount from being -1
     if valid == -1:
         return
-    
-    
-    
     else:
+        
         print(f"Name: {name}, Hired: {hired}, Amount: {amount}, receipt: {receipt} ")
         messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nReceipt: {receipt}")
         full_name.append(name)
-        hired_yes.append(hired)
+        hired_items.append(hired)
         amount_hired.append(amount)
         receipt_number.append(receipt)
         returns_box["values"] = receipt_number
@@ -102,25 +99,26 @@ def log_data():
 
  #saves the data to a text file     
 def save_data():
-    
-
-    with open("Curret_Party_hire.txt", "w") as file:
-        
-        file.write("====================\n")
-        file.write("Party hire\n")
-        file.write("====================\n\n")
-        
-        for i in range(len(full_name)):
-            file.write(f"Name: {full_name[i]}\n")
-            file.write(f"Hired: {hired_yes[i]}\n")
-            file.write(f"Amount Hired: {amount_hired[i]}\n")
-            file.write(f"Receipt: {receipt_number[i]}\n\n")
+    try:
+        with open("Curret_Party_hire.txt", "w") as file:
             
+            file.write("====================\n")
+            file.write("Party hire\n")
+            file.write("====================\n\n")
             
-    return
+            for i in range(len(full_name)):
+                file.write(f"Name: {full_name[i]}\n")
+                file.write(f"Hired: {hired_items[i]}\n")
+                file.write(f"Amount Hired: {amount_hired[i]}\n")
+                file.write(f"Receipt: {receipt_number[i]}\n\n")
+    except:
+        return -1
+         
+    return 1
 
 def save_returns():
-    with open("Returns_Party_hire.txt", "w") as file:
+    try:
+        with open("Returns_Party_hire.txt", "w") as file:
             file.write("====================\n")
             file.write("Returned Party Hire\n")
             file.write("====================\n\n")
@@ -130,34 +128,33 @@ def save_returns():
                 file.write(f"Hired: {returned_hired[i]}\n")
                 file.write(f"Amount Hired: {returned_amount[i]}\n")
                 file.write(f"Receipt: {returned_receipt[i]}\n\n")
-
-
+    except:
+        return -1
+    
+    return 1
 
 #allows the user to remove returns from the text file and list       
 def returns():
     remove = returns_box.get()
-    
- 
+
     if remove == "":
         messagebox.showerror("Error", "select a receipt.")
         return
     
     receipt = str(remove)
 
-    
-
-    #uses the recpeits index to delete the index form the file
-    
+    #uses the recpeits index save the the data to the returns file
     if receipt in receipt_number:
         index = receipt_number.index(receipt)
         returned_name.append(full_name[index])
-        returned_hired.append(hired_yes[index])
+        returned_hired.append(hired_items[index])
         returned_amount.append(amount_hired[index])
         returned_receipt.append(receipt_number[index])
         index = receipt_number.index(receipt)
-
+        
+        #uses the recpeits index to delete the index form the curret hire file
         del full_name[index]
-        del hired_yes[index]
+        del hired_items[index]
         del amount_hired[index]
         del receipt_number[index]
         
@@ -165,15 +162,10 @@ def returns():
         save_data()
         returns_box["values"] = receipt_number
         
-        
         messagebox.showinfo("Saved","Return done")
         returns_box.set('')
         return
     
-    
-       
-                                                                                                              
-
 #GUI so that the user can easily save the data to a document 
 root = tk.Tk()
 root.title("Mini-Movie Fundrasier")
