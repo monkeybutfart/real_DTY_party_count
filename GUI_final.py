@@ -69,13 +69,6 @@ def log_data():
         messagebox.showerror("Error", "Receipt already exists.")
         return
 
-    # update entry box
-    receipt_number_entry.delete(0, tk.END)
-    receipt_number_entry.insert(0, receipt)
-
-
-
-
     #stops the program from stopping to errors
     if name == "" or hired == "":
          messagebox.showerror("Error", "Please fill in all fields.")
