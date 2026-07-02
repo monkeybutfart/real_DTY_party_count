@@ -84,7 +84,7 @@ def log_data():
     if valid == -1:
         return
     else:
-        
+        #saves the data to a list and clears it the input boxes 
         print(f"Name: {name}, Hired: {hired}, Amount: {amount}, receipt: {receipt} ")
         messagebox.showinfo(f"Info Logged", f"Name: {name}\nHired: {hired}\nAmount Hired: {amount}\nReceipt: {receipt}")
         full_name.append(name)
